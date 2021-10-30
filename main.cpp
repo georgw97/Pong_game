@@ -20,7 +20,7 @@ int main()
     sprite.setPosition(sf::Vector2f(10.f, 50.f));
 
     //Game variables
-    float playerMoveSpeed = 10;
+    float playerMoveSpeed = 5;
     //game loop
     while(window.isOpen()){
 
@@ -36,7 +36,7 @@ int main()
                     sprite.move(sf::Vector2f(0.f, playerMoveSpeed));
                 }
                 if (event.key.code == sf::Keyboard::W){
-                    sprite.move(sf::Vector2f(0.f, playerMoveSpeed));
+                    sprite.move(sf::Vector2f(0.f, -playerMoveSpeed));
                 }
             }
         }
