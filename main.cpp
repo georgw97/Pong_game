@@ -9,9 +9,10 @@ int main()
 {
     //Game variables
 
-    float playerMoveSpeed = 100;
-    float ballMovementSpeedX = 100 *(rand() % 3+1);
-    float ballMovementSpeedY = 100 *(rand() % 3+1);
+    float playerMoveSpeed = 1000;
+    float playerMoveY = 0;
+    float ballMovementSpeedX = 1000;
+    float ballMovementSpeedY = 100;
     int resHor = 1280;
     int resVer = 720;
     bool condition = false;
@@ -51,28 +52,57 @@ int main()
             if(event.type == sf::Event::Closed){
                 window.close();
             }
+            // key pressed keybinds
             if (event.type == sf::Event::KeyPressed){
-                if (event.key.code == sf::Keyboard::S){
-                    player1.move(sf::Vector2f(0.f, playerMoveSpeed));
+                if(event.key.code == sf::Keyboard::S){
+                    playerMoveY = playerMoveSpeed;
                 }
-                if (event.key.code == sf::Keyboard::W){
-                    player1.move(sf::Vector2f(0.f, -playerMoveSpeed));
+                else if(event.key.code == sf::Keyboard::W){
+                    playerMoveY = -playerMoveSpeed;
                 }
             }           
+            if(event.type == sf::Event::KeyReleased){
+                if(event.key.code == sf::Keyboard::S){
+                    playerMoveY = 0;
+                }
+                else if(event.key.code == sf::Keyboard::W){
+                    playerMoveY = 0;
+                }
+            }
         }
 
+        // player and ball need to move
+        player1.move(sf::Vector2f(0, playerMoveY * deltaT(sclock)));
         ball.move(sf::Vector2f(ballMovementSpeedX * deltaT(sclock), ballMovementSpeedY * deltaT(sclock)));
+
+        // restart clock
         sf::Time elapsed = sclock.restart();
-        std::cout << ballMovementSpeedX << std::endl;
-        if (ball.getPosition().x >= 1280 + 30){
+
+        // Player Out of Scope handling
+
+
+        // Ball bouncing handling
+        if(ball.getPosition().x >= 1280 + 30){
             ballMovementSpeedX = -ballMovementSpeedX;
         }
-        if (ball.getPosition().y >= resVer + 30 || (ball.getPosition().y <= 0 + 45)){
+        if(ball.getPosition().y >= resVer + 30 || (ball.getPosition().y <= 0 + 45)){
             ballMovementSpeedY = -ballMovementSpeedY;
         }
-        if (ball.getGlobalBounds().intersects(player1.getGlobalBounds())){
-            ballMovementSpeedX = -ballMovementSpeedX;
+        // player missed ball handling
+        if(ball.getPosition().x <= 0){
+            window.close();
         }
+
+        //collision handling
+        if(ball.getGlobalBounds().intersects(player1.getGlobalBounds())){
+            ballMovementSpeedX = -ballMovementSpeedX;
+
+            //check where the ball exactly intersects with the player
+
+            //change ball direction depending from the pos where the ball hit player
+        
+        }
+
 
         // clear the window with black color
         window.clear(sf::Color::Black);
