@@ -11,14 +11,16 @@ int main()
 {
     //Game variables
 
-    float playerMoveSpeed = 1000; // speed
-    float playerMoveY = 0; // how much the player moves (specified in loop)
+    float playerMoveSpeed = 1000.0; // speed
+    float playerMoveY = 0.0; // how much the player moves (specified in loop)
+    float playerHeight = 100.0;
+    float playerWidth = 10.0;
 
     //initial movement of ball
-    float ballMovementSpeedX = 1000; 
+    float ballMovementSpeedX = 1000.0; 
     srand(time(0));
     //float ballMovementSpeedY = 50 - (rand() % 100 + 1);
-    float ballMovementSpeedY = 0;
+    float ballMovementSpeedY = 0.0;
 
     //game res
     int resHor = 1280;
@@ -34,7 +36,7 @@ int main()
     // create the texture
     sf::Texture playertexture;
     // it shall be a 16x1600 texture, empty
-    if (!playertexture.loadFromFile("testtexture.png", sf::IntRect(0, 0 , 10 , 100)))
+    if (!playertexture.loadFromFile("testtexture.png", sf::IntRect(0, 0 , playerWidth , playerHeight)))
     {
         // error...
         return 1;
@@ -43,7 +45,7 @@ int main()
     sf::Sprite player1;
     player1.setTexture(playertexture);
     player1.setPosition(sf::Vector2f(10.f, resVer/2));
-    player1.setOrigin(5, 50);
+    player1.setOrigin(5, playerHeight/2.0);
 
     //create the ball
     sf::CircleShape ball(10.f);
@@ -79,27 +81,24 @@ int main()
                 }
             }
         }
-
-        // player and ball need to move
-        player1.move(sf::Vector2f(0, playerMoveY * deltaT(sclock)));
-        ball.move(sf::Vector2f(ballMovementSpeedX * deltaT(sclock), ballMovementSpeedY * deltaT(sclock)));
-
-        // restart clock
-        sf::Time elapsed = sclock.restart();
-
         // Player Out of Scope handling
-        
+        if(player1.getPosition().y > resVer-playerHeight/2.0){
+            player1.setPosition(sf::Vector2f(10, resVer - playerHeight/2.0));
+        }
+        else if(player1.getPosition().y <= 0 + playerHeight/2.0){
+            player1.setPosition(sf::Vector2f(10, playerHeight/2.0));
+        }
 
         // Ball bouncing handling
         if(ball.getPosition().x >= 1280){
             ballMovementSpeedX = -ballMovementSpeedX;
         }
-        if(ball.getPosition().y >= resVer - 15 || (ball.getPosition().y <= 0 )){
+        else if(ball.getPosition().y >= resVer - 15 || (ball.getPosition().y <= 0 )){
             ballMovementSpeedY = -ballMovementSpeedY;
         }
         // player missed ball handling
-        if(ball.getPosition().x <= 0){
-            window.close();
+        else if(ball.getPosition().x <= 0){
+            //window.close();
         }
 
         //collision handling
@@ -117,7 +116,12 @@ int main()
             ballMovementSpeedX = -ballMovementSpeedX;
         }
     
+        // player and ball need to move
+        player1.move(sf::Vector2f(0, playerMoveY * deltaT(sclock)));
+        ball.move(sf::Vector2f(ballMovementSpeedX * deltaT(sclock), ballMovementSpeedY * deltaT(sclock)));
 
+        // restart clock
+        sf::Time elapsed = sclock.restart();
 
         // clear the window with black color
         window.clear(sf::Color::Black);
