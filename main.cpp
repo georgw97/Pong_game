@@ -98,7 +98,7 @@ int main()
         }
         // player missed ball handling
         else if(ball.getPosition().x <= 0){
-            //window.close();
+            window.close();
         }
 
         //collision handling
