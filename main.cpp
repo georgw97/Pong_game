@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#define PI 3.14159265
+
 float deltaT(sf::Clock clock){  
     return clock.getElapsedTime().asSeconds();
 }
@@ -9,10 +11,16 @@ int main()
 {
     //Game variables
 
-    float playerMoveSpeed = 1000;
-    float playerMoveY = 0;
-    float ballMovementSpeedX = 1000;
-    float ballMovementSpeedY = 100;
+    float playerMoveSpeed = 1000; // speed
+    float playerMoveY = 0; // how much the player moves (specified in loop)
+
+    //initial movement of ball
+    float ballMovementSpeedX = 1000; 
+    srand(time(0));
+    //float ballMovementSpeedY = 50 - (rand() % 100 + 1);
+    float ballMovementSpeedY = 0;
+
+    //game res
     int resHor = 1280;
     int resVer = 720;
     bool condition = false;
@@ -34,13 +42,14 @@ int main()
     // create the player
     sf::Sprite player1;
     player1.setTexture(playertexture);
-    player1.setPosition(sf::Vector2f(10.f, 50.f));
+    player1.setPosition(sf::Vector2f(10.f, resVer/2));
+    player1.setOrigin(5, 50);
 
     //create the ball
     sf::CircleShape ball(10.f);
     ball.setFillColor(sf::Color(250, 250, 250));
     ball.setPosition(sf::Vector2f(resHor/2, resVer/2));
-    ball.setOrigin(50, 50);
+    ball.setOrigin(5, 5);
 
     //game loop
     while(window.isOpen()){
@@ -79,13 +88,13 @@ int main()
         sf::Time elapsed = sclock.restart();
 
         // Player Out of Scope handling
-
+        
 
         // Ball bouncing handling
-        if(ball.getPosition().x >= 1280 + 30){
+        if(ball.getPosition().x >= 1280){
             ballMovementSpeedX = -ballMovementSpeedX;
         }
-        if(ball.getPosition().y >= resVer + 30 || (ball.getPosition().y <= 0 + 45)){
+        if(ball.getPosition().y >= resVer - 15 || (ball.getPosition().y <= 0 )){
             ballMovementSpeedY = -ballMovementSpeedY;
         }
         // player missed ball handling
@@ -95,13 +104,19 @@ int main()
 
         //collision handling
         if(ball.getGlobalBounds().intersects(player1.getGlobalBounds())){
-            ballMovementSpeedX = -ballMovementSpeedX;
-
+            
             //check where the ball exactly intersects with the player
-
+            float ballPosY = ball.getPosition().y;
+            float playerPosY = player1.getPosition().y;
             //change ball direction depending from the pos where the ball hit player
-        
+            //player is 10 x 100, ball is r10
+            float param = playerPosY-ballPosY;
+            float rise = 1.0/50.0;
+            
+            ballMovementSpeedY = rise * param * ballMovementSpeedX;
+            ballMovementSpeedX = -ballMovementSpeedX;
         }
+    
 
 
         // clear the window with black color
