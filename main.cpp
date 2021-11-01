@@ -1,16 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#define PI 3.14159265
-
 float deltaT(sf::Clock clock){  
     return clock.getElapsedTime().asSeconds();
 }
 
 int main()
 {
-    //Game variables
+    //game res
+    int resHor = 1280;
+    int resVer = 720;
 
+    //Game variables
     float playerMoveSpeed = 1000.0; // speed
     float playerMoveY = 0.0; // how much the player moves (specified in loop)
     float playerHeight = 100.0;
@@ -19,13 +20,26 @@ int main()
     //initial movement of ball
     float ballMovementSpeedX = 1000.0; 
     srand(time(0));
-    //float ballMovementSpeedY = 50 - (rand() % 100 + 1);
-    float ballMovementSpeedY = 0.0;
+    float ballMovementSpeedY = 50 - (rand() % 100);
 
-    //game res
-    int resHor = 1280;
-    int resVer = 720;
-    bool condition = false;
+    //pointcounter
+    int points = 0;
+    int life = 0;
+
+    //create the text font
+    sf::Font font;
+    if(!font.loadFromFile("CascadiaMono.ttf")){
+        return 2;
+    }
+
+    //crate the text
+    sf::Text pointstext;
+    pointstext.setFont(font);
+    pointstext.setString(std::to_string(points));
+    pointstext.setCharacterSize(24);
+    pointstext.setFillColor(sf::Color::White);
+    pointstext.setPosition(sf::Vector2f(resHor * 0.5, 0+ 10));
+    sf::Text lifetext;
 
     // create the clock
     sf::Clock sclock;
@@ -98,12 +112,20 @@ int main()
         }
         // player missed ball handling
         else if(ball.getPosition().x <= 0){
-            window.close();
+            //Restart
+            points = 0;
+            pointstext.setString(std::to_string(points));
+            ball.setPosition(sf::Vector2f(resHor/2, resVer/2));
+            ballMovementSpeedX = 1000;
+            ballMovementSpeedY = 50 - (rand() % 100);
+            std::cout << "ball is out!" << std::endl;
+
         }
 
         //collision handling
         if(ball.getGlobalBounds().intersects(player1.getGlobalBounds())){
-            
+            points++;
+            pointstext.setString(std::to_string(points));
             //check where the ball exactly intersects with the player
             float ballPosY = ball.getPosition().y;
             float playerPosY = player1.getPosition().y;
@@ -111,7 +133,8 @@ int main()
             //player is 10 x 100, ball is r10
             float param = playerPosY-ballPosY;
             float rise = 1.0/50.0;
-            
+
+            // Bug 
             ballMovementSpeedY = rise * param * ballMovementSpeedX;
             ballMovementSpeedX = -ballMovementSpeedX;
         }
@@ -128,6 +151,7 @@ int main()
         // draw everything here
         window.draw(ball);
         window.draw(player1);
+        window.draw(pointstext);
 
         //to here
         window.display();
