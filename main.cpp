@@ -43,6 +43,7 @@ int main()
 
     // create the clock
     sf::Clock sclock;
+    sf::Clock collisionClock;
 
     // create the Windo
     sf::RenderWindow window(sf::VideoMode(resHor, resVer), "My Window");
@@ -124,19 +125,23 @@ int main()
 
         //collision handling
         if(ball.getGlobalBounds().intersects(player1.getGlobalBounds())){
-            points++;
-            pointstext.setString(std::to_string(points));
-            //check where the ball exactly intersects with the player
-            float ballPosY = ball.getPosition().y;
-            float playerPosY = player1.getPosition().y;
-            //change ball direction depending from the pos where the ball hit player
-            //player is 10 x 100, ball is r10
-            float param = playerPosY-ballPosY;
-            float rise = 1.0/50.0;
-
-            // Bug 
-            ballMovementSpeedY = rise * param * ballMovementSpeedX;
-            ballMovementSpeedX = -ballMovementSpeedX;
+            //check if 1 second has passed since last collision
+            if(collisionClock.getElapsedTime().asSeconds() > 1){
+                collisionClock.restart();
+                //increment points 
+                points++;
+                pointstext.setString(std::to_string(points));
+                //check where the ball exactly intersects with the player
+                float ballPosY = ball.getPosition().y;
+                float playerPosY = player1.getPosition().y;
+                //change ball direction depending from the pos where the ball hit player
+                //player is 10 x 100, ball is r10
+                float param = playerPosY-ballPosY;
+                float rise = 1.0/50.0;
+                // Bug 
+                ballMovementSpeedY = rise * param * ballMovementSpeedX;
+                ballMovementSpeedX = -ballMovementSpeedX;
+            } 
         }
     
         // player and ball need to move
