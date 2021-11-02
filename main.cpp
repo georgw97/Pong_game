@@ -1,9 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
-float deltaT(sf::Clock clock){  
-    return clock.getElapsedTime().asSeconds();
-}
+#include "funcs.hpp"
 
 int main()
 {
@@ -26,20 +23,35 @@ int main()
     int points = 0;
     int life = 0;
 
+    //game on or not
+    bool gameOn = false;
+
     //create the text font
     sf::Font font;
     if(!font.loadFromFile("CascadiaMono.ttf")){
         return 2;
     }
 
-    //crate the text
+    //ceate the text
     sf::Text pointstext;
     pointstext.setFont(font);
     pointstext.setString(std::to_string(points));
     pointstext.setCharacterSize(24);
     pointstext.setFillColor(sf::Color::White);
     pointstext.setPosition(sf::Vector2f(resHor * 0.5, 0+ 10));
-    sf::Text lifetext;
+
+    sf::Text mainMenuText;
+    mainMenuText.setFont(font);
+    mainMenuText.setString("WELCOME To Pong Game -- Made by Georg Wollert\n\n"
+    "1: Single Player\n"
+    "2: Multi Player\n"
+    "3: Highscore\n"
+    "4: Quit\n");
+    mainMenuText.setCharacterSize(24);
+    mainMenuText.setFillColor(sf::Color::White);
+    mainMenuText.setPosition(sf::Vector2f(10,10));
+    mainMenuText.setOrigin(sf::Vector2f());
+    
 
     // create the clock
     sf::Clock sclock;
@@ -78,13 +90,44 @@ int main()
             if(event.type == sf::Event::Closed){
                 window.close();
             }
+            // Game 1
             // key pressed keybinds
             if (event.type == sf::Event::KeyPressed){
-                if(event.key.code == sf::Keyboard::S){
-                    playerMoveY = playerMoveSpeed;
+                //Main menu Logic
+                if(!gameOn){
+                    if(event.key.code == sf::Keyboard::Num1){
+                        points = 0;
+                        pointstext.setString(std::to_string(points));
+                        ball.setPosition(sf::Vector2f(resHor/2, resVer/2));
+                        ballMovementSpeedX = 1000;
+                        ballMovementSpeedY = 50 - (rand() % 100);
+                        gameOn = true;
+                    }
+                    else if(event.key.code == sf::Keyboard::Num2){
+
+                    }
+                    else if(event.key.code == sf::Keyboard::Num3){
+                        //Disp highscore from database
+                    }
+                    else if(event.key.code == sf::Keyboard::Num4){
+                        window.close();
+                    }
+                    else if(event.key.code == sf::Keyboard::Escape){
+                        window.close();
+                    }
                 }
-                else if(event.key.code == sf::Keyboard::W){
-                    playerMoveY = -playerMoveSpeed;
+                //Game Logic
+                if(gameOn){
+                    if(event.key.code == sf::Keyboard::S){
+                        playerMoveY = playerMoveSpeed;
+                    }
+                    else if(event.key.code == sf::Keyboard::W){
+                        playerMoveY = -playerMoveSpeed;
+                    }
+                    else if(event.key.code == sf::Keyboard::Escape){
+                        gameOn = false;
+                    }
+
                 }
             }           
             if(event.type == sf::Event::KeyReleased){
@@ -119,12 +162,11 @@ int main()
             ball.setPosition(sf::Vector2f(resHor/2, resVer/2));
             ballMovementSpeedX = 1000;
             ballMovementSpeedY = 50 - (rand() % 100);
-            std::cout << "ball is out!" << std::endl;
-
         }
 
         //collision handling
         if(ball.getGlobalBounds().intersects(player1.getGlobalBounds())){
+            
             //check if 1 second has passed since last collision
             if(collisionClock.getElapsedTime().asSeconds() > 1){
                 collisionClock.restart();
@@ -137,7 +179,7 @@ int main()
                 //change ball direction depending from the pos where the ball hit player
                 //player is 10 x 100, ball is r10
                 float param = playerPosY-ballPosY;
-                float rise = 1.0/50.0;
+                float rise = 1.0/100.0;
                 // Bug 
                 ballMovementSpeedY = rise * param * ballMovementSpeedX;
                 ballMovementSpeedX = -ballMovementSpeedX;
@@ -154,9 +196,14 @@ int main()
         // clear the window with black color
         window.clear(sf::Color::Black);
         // draw everything here
-        window.draw(ball);
-        window.draw(player1);
-        window.draw(pointstext);
+        if(gameOn){
+            window.draw(ball);
+            window.draw(player1);
+            window.draw(pointstext);
+        }
+        else{
+            window.draw(mainMenuText);
+        }
 
         //to here
         window.display();
