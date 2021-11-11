@@ -1,0 +1,68 @@
+﻿  main.cpp
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(19,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(20,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(41,48): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(66,99): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(66,86): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(74,51): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(75,39): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(80,54): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(80,42): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(101,74): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(101,62): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(103,49): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(144,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(147,63): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(162,62): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(162,50): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(164,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Georg\Documents\Projects\Pong\Pong\src\main.cpp(182,41): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Pong.vcxproj -> C:\Users\Georg\Documents\Projects\Pong\bin\Win32\Debug\Pong.exe
